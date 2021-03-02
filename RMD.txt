@@ -1,0 +1,25 @@
+ES 代码实用课程 以及 spark 链接spark-hdfs一些使用方式
+
+	mysql-kinal-spark-es
+	EsDemo-讲怎么储存到es的。
+	最最核心代码 javaEsSparkSQL.saveToEs(res,"xxx/tewt.txt")
+
+	Dataset<Row> result = session.sql("select m.*,o.orderCount,o.orderTime,o.orderMoney,o.favGoods," +
+                    " fb.freeCouponTime,ct.couponTimes, cm.chargeMoney,ot.overTime,f.feedBack" +
+                    " from member as m " +
+                    " left join oc as o on m.memberId = o.memberId " +
+                    " left join freeCoupon as fb on m.memberId = fb.memberId " +
+                    " left join couponTimes as ct on m.memberId = ct.memberId " +
+                    " left join chargeMoney as cm on m.memberId = cm.memberId " +
+                    " left join overTime as ot on m.memberId = ot.memberId " +
+                    " left join feedback as f on m.memberId = f.memberId ");
+     链接es 的使用， 然后汇总成一张大的用户画像表。
+     如：下面spark怎么链接es的实际使用情况。
+      SparkSession session = SparkSession.builder().appName("member etl")
+                     .master("local[*]")
+                     .config("es.nodes", "namenode")
+                     .config("es.port", "9200")
+                     .config("es.index.auto.create", "false")
+                     .enableHiveSupport()
+                     .getOrCreate();
+             sessionPool.set(session);
